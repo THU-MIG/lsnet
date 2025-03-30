@@ -1,0 +1,1 @@
+python main.py --eval --model lsnet_b --resume ./pretrain/lsnet_b_distill.pth --data-path ~/imagenet --distillation-type hard

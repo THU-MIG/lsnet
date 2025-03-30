@@ -1,0 +1,1 @@
+PORT=12345 ./tools/dist_test.sh configs/sem_fpn/fpn_lsnet_t_ade20k_40k.py pretrain/lsnet_t_semfpn.pth 8 --eval mIoU
