@@ -1,4 +1,4 @@
-# [LSNet: See Large, Focus Small]()
+# [LSNet: See Large, Focus Small](https://arxiv.org/abs/2503.23135)
 
 
 Official PyTorch implementation of **LSNet**. CVPR 2025.
@@ -9,9 +9,9 @@ Official PyTorch implementation of **LSNet**. CVPR 2025.
  is tested on a Nvidia RTX3090.
 </p>
 
-[LSNet: See Large, Focus Small]().\
+[LSNet: See Large, Focus Small](https://arxiv.org/abs/2503.23135).\
 Ao Wang, Hui Chen, Zijia Lin, Jungong Han, and Guiguang Ding\
-[[`arXiv`]()]
+[![arXiv](https://img.shields.io/badge/arXiv-2503.23135-b31b1b.svg)](https://arxiv.org/abs/2503.23135) [![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue)](https://huggingface.co/jameslahm/lsnet/tree/main)
 
 <details>
   <summary>
@@ -80,5 +80,13 @@ Thanks for the great implementations!
 
 If our code or models help your work, please cite our paper:
 ```BibTeX
-
+@misc{wang2025lsnetlargefocussmall,
+      title={LSNet: See Large, Focus Small}, 
+      author={Ao Wang and Hui Chen and Zijia Lin and Jungong Han and Guiguang Ding},
+      year={2025},
+      eprint={2503.23135},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2503.23135}, 
+}
 ```
