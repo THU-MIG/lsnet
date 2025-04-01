@@ -13,6 +13,8 @@ Official PyTorch implementation of **LSNet**. CVPR 2025.
 Ao Wang, Hui Chen, Zijia Lin, Jungong Han, and Guiguang Ding\
 [![arXiv](https://img.shields.io/badge/arXiv-2503.23135-b31b1b.svg)](https://arxiv.org/abs/2503.23135) [![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue)](https://huggingface.co/jameslahm/lsnet/tree/main)
 
+We introduce LSNet, a new family of lightweight vision models inspired by dynamic heteroscale capability of the human visual system, i.e., "See Large, Focus Small". LSNet achieves state-of-the-art performance and efficiency trade-offs across various vision tasks.
+
 <details>
   <summary>
   <font size="+1">Abstract</font>
