@@ -6,6 +6,9 @@ from timm.models.layers import SqueezeExcite
 from timm.models.registry import register_model
 from .ska import SKA
 
+from timm.models.helpers import build_model_with_cfg
+from timm.data import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
+
 class Conv2d_BN(torch.nn.Sequential):
     def __init__(self, a, b, ks=1, stride=1, pad=0, dilation=1,
                  groups=1, bn_weight_init=1):
@@ -267,6 +270,9 @@ class LSNet(torch.nn.Module):
         self.distillation = distillation
         if distillation:
             self.head_dist = BN_Linear(embed_dim[-1], num_classes) if num_classes > 0 else torch.nn.Identity()
+            
+        self.num_classes = num_classes
+        self.num_features = embed_dim[-1]
 
     @torch.jit.ignore # type: ignore
     def no_weight_decay(self):
@@ -287,10 +293,40 @@ class LSNet(torch.nn.Module):
             x = self.head(x)
         return x
 
+def _cfg(url='', **kwargs):
+    return {
+        'url': url,
+        'num_classes': 1000, 'input_size': (3, 224, 224), 'pool_size': (4, 4),
+        'crop_pct': .9, 'interpolation': 'bicubic',
+        'mean': IMAGENET_DEFAULT_MEAN, 'std': IMAGENET_DEFAULT_STD,
+        'first_conv': 'patch_embed.0.c', 'classifier': ('head.linear', 'head_dist.linear'),
+        **kwargs
+    }
+
+default_cfgs = dict(
+    lsnet_t = _cfg(hf_hub='jameslahm/lsnet_t'),
+    lsnet_t_distill = _cfg(hf_hub='jameslahm/lsnet_t_distill'),
+    lsnet_s = _cfg(hf_hub='jameslahm/lsnet_s'),
+    lsnet_s_distill = _cfg(hf_hub='jameslahm/lsnet_s_distill'),
+    lsnet_b = _cfg(hf_hub='jameslahm/lsnet_b'),
+    lsnet_b_distill = _cfg(hf_hub='jameslahm/lsnet_b_distill'),
+)
+
+def _create_lsnet(variant, pretrained=False, **kwargs):
+    model = build_model_with_cfg(
+        LSNet,
+        variant,
+        pretrained,
+        default_cfg=default_cfgs[variant],
+        **kwargs,
+    )
+    return model
 
 @register_model
-def lsnet_t(num_classes=1000, distillation=False, pretrained=False):
-    model = LSNet(num_classes=num_classes, 
+def lsnet_t(num_classes=1000, distillation=False, pretrained=False, **kwargs):
+    model = _create_lsnet("lsnet_t" + ("_distill" if distillation else ""),
+                  pretrained=pretrained,
+                  num_classes=num_classes, 
                   distillation=distillation, 
                   img_size=224,
                   patch_size=8,
@@ -301,8 +337,10 @@ def lsnet_t(num_classes=1000, distillation=False, pretrained=False):
     return model
 
 @register_model
-def lsnet_s(num_classes=1000, distillation=False, pretrained=False):
-    model = LSNet(num_classes=num_classes, 
+def lsnet_s(num_classes=1000, distillation=False, pretrained=False, **kwargs):
+    model = _create_lsnet("lsnet_s" + ("_distill" if distillation else ""),
+                  pretrained=pretrained,
+                  num_classes=num_classes, 
                   distillation=distillation,
                   img_size=224,
                   patch_size=8,
@@ -313,8 +351,10 @@ def lsnet_s(num_classes=1000, distillation=False, pretrained=False):
     return model
 
 @register_model
-def lsnet_b(num_classes=1000, distillation=False, pretrained=False):
-    model = LSNet(num_classes=num_classes, 
+def lsnet_b(num_classes=1000, distillation=False, pretrained=False, **kwargs):
+    model = _create_lsnet("lsnet_b" + ("_distill" if distillation else ""),
+                  pretrained=pretrained,
+                  num_classes=num_classes, 
                   distillation=distillation,
                   img_size=224,
                   patch_size=8,
@@ -323,3 +363,18 @@ def lsnet_b(num_classes=1000, distillation=False, pretrained=False):
                   num_heads=[3, 3, 3, 4],
                   )
     return model
+
+@register_model
+def lsnet_t_distill(**kwargs):
+    kwargs["distillation"] = True
+    return lsnet_t(**kwargs)
+
+@register_model
+def lsnet_s_distill(**kwargs):
+    kwargs["distillation"] = True
+    return lsnet_s(**kwargs)
+
+@register_model
+def lsnet_b_distill(**kwargs):
+    kwargs["distillation"] = True
+    return lsnet_b(**kwargs)

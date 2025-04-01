@@ -11,7 +11,7 @@ Official PyTorch implementation of **LSNet**. CVPR 2025.
 
 [LSNet: See Large, Focus Small](https://arxiv.org/abs/2503.23135).\
 Ao Wang, Hui Chen, Zijia Lin, Jungong Han, and Guiguang Ding\
-[![arXiv](https://img.shields.io/badge/arXiv-2503.23135-b31b1b.svg)](https://arxiv.org/abs/2503.23135) [![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue)](https://huggingface.co/jameslahm/lsnet/tree/main)
+[![arXiv](https://img.shields.io/badge/arXiv-2503.23135-b31b1b.svg)](https://arxiv.org/abs/2503.23135) [![Hugging Face Models](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Models-blue)](https://huggingface.co/jameslahm/lsnet/tree/main) [![Hugging Face Collection](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Collection-blue)](https://huggingface.co/collections/jameslahm/lsnet-67ebec0ab4e220e7918d9565)
 
 We introduce LSNet, a new family of lightweight vision models inspired by dynamic heteroscale capability of the human visual system, i.e., "See Large, Focus Small". LSNet achieves state-of-the-art performance and efficiency trade-offs across various vision tasks.
 
@@ -63,6 +63,15 @@ python -m torch.distributed.launch --nproc_per_node=8 --master_port 12345 --use_
 ### Testing 
 ```bash
 python main.py --eval --model lsnet_t --resume ./pretrain/lsnet_t.pth --data-path ~/imagenet
+```
+Models can also be automatically downloaded from 🤗 like below.
+```python
+import timm
+
+model = timm.create_model(
+    f'hf_hub:jameslahm/lsnet_{t/t_distill/s/s_distill/b/b_distill}',
+    pretrained=True
+)
 ```
 
 ## Downstream Tasks
